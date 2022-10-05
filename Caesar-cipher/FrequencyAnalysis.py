@@ -1,0 +1,41 @@
+#%%
+#########################################################################################
+import matplotlib.pylab as plt
+
+
+# Setting my alphabet (letters which will be shifted/encrypted)
+alphabet = ''.join(chr(i) for i in range(31,255))
+
+#########################################################################################
+# Function to crack the encryption in the text
+def frequency_analysis(text):
+
+    # Starting dictionary with 0 values for each letter.
+    letters_frequency = {}
+    for letter in alphabet:
+        letters_frequency[letter] = 0
+
+    for letter in text:
+        if letter in alphabet:
+            letters_frequency[letter] += 1
+
+    aux = {}
+    for letter in letters_frequency:
+        if letters_frequency[letter] != 0:
+            aux[letter] = letters_frequency[letter]
+
+    letters_frequency = aux
+    
+    return letters_frequency
+
+def plot_distribution(frequencies):
+    plt.bar(frequencies.keys(), frequencies.values())
+    plt.show
+
+if __name__ == '__main__':
+
+    cipher_text = 'KüHknaiüEloqiüåüqiüpatpküik`ahkü`]üej`öopne]üpelkcnÝbe_]üaü`aüeilnaooßk*üKüHknaiüEloqiüpaiürej`kü]üoanüküpatpkül]`nßküqo]`külknüaop]oüej`öopne]oü`ao`aükü]jkü`aü-1,,(ümq]j`küqi]üieopqnkqükoü_]n]_panaoü`aüqiüpatpkül]n]ü_ne]nüqiüaolå_eiaü`aühernk*üAopaüpatpküjßküoïüok^nareraqü1üoå_qhko(üi]oüp]i^åiüküo]hpkül]n]ü]üpelkcn]be]üaha_pnïje_](üi]jpaj`k)oaüaooaj_e]hiajpaüej]hpan]`]*üBkeülklqh]nev]`]üjkoü]jkoü2,ü_kiü]ü`eolkje^ehev]ãßkü`]oübkhd]oü`aüHapn]oap(ümqaü_kjpejd]iül]oo]cajoü_kiüHknaiüEloqi(üaüi]eoüna_ajpaiajpaü_kiükoülnkcn]i]oü`aülq^he_]ãßkü_kikükü=h`qoüL]caI]ganümqaüej_hqaiüranoñaoü`küHknaiüEloqi*'
+
+    plot_distribution(frequency_analysis(cipher_text))
+
+# %%
