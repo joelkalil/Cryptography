@@ -15,10 +15,12 @@ def frequency_analysis(text):
     for letter in alphabet:
         letters_frequency[letter] = 0
 
+    # Counting the letters in the text.
     for letter in text:
         if letter in alphabet:
             letters_frequency[letter] += 1
 
+    # Not considering the letters never used.
     aux = {}
     for letter in letters_frequency:
         if letters_frequency[letter] != 0:
@@ -28,10 +30,12 @@ def frequency_analysis(text):
     
     return letters_frequency
 
+# Function to plot the distribution.
 def plot_distribution(frequencies):
     plt.bar(frequencies.keys(), frequencies.values())
     plt.show
 
+# Algorithm to crack Caesar cryptography.
 def caesar_crack(text):
     # Getting the frequency analysis of the text
     freq = frequency_analysis(text)
@@ -52,3 +56,4 @@ if __name__ == '__main__':
     cipher_text = 'KüHknaiüEloqiüåüqiüpatpküik`ahkü`]üej`öopne]üpelkcnÝbe_]üaü`aüeilnaooßk*üKüHknaiüEloqiüpaiürej`kü]üoanüküpatpkül]`nßküqo]`külknüaop]oüej`öopne]oü`ao`aükü]jkü`aü-1,,(ümq]j`küqi]üieopqnkqükoü_]n]_panaoü`aüqiüpatpkül]n]ü_ne]nüqiüaolå_eiaü`aühernk*üAopaüpatpküjßküoïüok^nareraqü1üoå_qhko(üi]oüp]i^åiüküo]hpkül]n]ü]üpelkcn]be]üaha_pnïje_](üi]jpaj`k)oaüaooaj_e]hiajpaüej]hpan]`]*üBkeülklqh]nev]`]üjkoü]jkoü2,ü_kiü]ü`eolkje^ehev]ãßkü`]oübkhd]oü`aüHapn]oap(ümqaü_kjpejd]iül]oo]cajoü_kiüHknaiüEloqi(üaüi]eoüna_ajpaiajpaü_kiükoülnkcn]i]oü`aülq^he_]ãßkü_kikükü=h`qoüL]caI]ganümqaüej_hqaiüranoñaoü`küHknaiüEloqi*'
 
     caesar_crack(cipher_text)
+# %%
