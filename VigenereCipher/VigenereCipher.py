@@ -1,13 +1,15 @@
 #########################################################################################
 # Setting my alphabet (letters which will be shifted/encrypted)
-alphabet = ''.join(chr(i) for i in range(31,255))
+#alphabet = ''.join(chr(i) for i in range(31,255))
+alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
 
 # If you want to see what we considered as alphabet.
 # print(alphabet)
 
 #########################################################################################
 # Function to encryption the text
-def vigenere_encryption(plain_text, private_key='Love is War'):
+def vigenere_encryption(plain_text, private_key='LOVE IS WAR'):
 
     # It represents the index of the letters in the key
     key_index = 0
@@ -34,7 +36,7 @@ def vigenere_encryption(plain_text, private_key='Love is War'):
 
 #########################################################################################
 # Function to encryption the text
-def vigenere_decryption(cipher_text, private_key='Love is War'):
+def vigenere_decryption(cipher_text, private_key='LOVE IS WAR'):
 
     # It represents the index of the letters in the key
     key_index = 0
@@ -64,8 +66,9 @@ def vigenere_decryption(cipher_text, private_key='Love is War'):
 
 if __name__ == '__main__':
     # Test case :
-    text = 'O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.'
-    
+    #text = 'O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.'
+    text = "LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY LOREM IPSUM HAS BEEN THE INDUSTRYS STANDARD DUMMY TEXT EVER SINCE THE 1500S WHEN AN UNKNOWN PRINTER TOOK A GALLEY OF TYPE AND SCRAMBLED IT TO MAKE A TYPE SPECIMEN BOOK IT HAS SURVIVED NOT ONLY FIVE CENTURIES BUT ALSO THE LEAP INTO ELECTRONIC TYPESETTING, REMAINING ESSENTIALLY UNCHANGED IT WAS POPULARISED IN THE 1960S WITH THE RELEASE OF LETRASET SHEETS CONTAINING LOREM IPSUM PASSAGES AND MORE RECENTLY WITH DESKTOP PUBLISHING SOFTWARE LIKE ALDUS PAGEMAKER INCLUDING VERSIONS OF LOREM IPSUM"
+
     # Crypted
     print(vigenere_encryption(text))
     # Decrypted
