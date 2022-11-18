@@ -1,1 +1,1 @@
-from FrequencyAnalysis import frequency_analysis, plot_distribution
+from FrequencyAnalysis import *

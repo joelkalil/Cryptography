@@ -1,8 +1,13 @@
 #%%
 #########################################################################################
-import matplotlib.pylab as plt
+import sys
+
+sys.path.append("/home/joel/Desktop/Cryptography/DetectLanguage")
+sys.path.append("/home/joel/Desktop/Cryptography/FrequencyAnalysis")
+
+from FrequencyAnalysis import frequency_analysis
+from DetectEnglish import is_text_english
 from CaesarCipher import caesar_decryption
-from FrequencyAnalysis import frequency_analysis, plot_distribution
 
 # Setting my alphabet (letters which will be shifted/encrypted)
 alphabet = ''.join(chr(i) for i in range(31,255))
@@ -18,15 +23,23 @@ def caesar_crack(text):
 
     # Calculating the possible key
     key = alphabet.find(freq[0][0]) - alphabet.find(' ')
+
+    # Getting the decrypted text for the value of key.
+    decrypted_text = caesar_decryption(text, key)
+
+    # Checking if is english or not.
+    result = is_text_english(decrypted_text)
+
     print("The possible key value: %s" % key)
-    
+    print("The match of words is: %s" % f'{result[1]: .2f}')
     # Decrypting the text
     print(caesar_decryption(text, key))
 
-
+#########################################################################################
+# Testing the crack cryptography function
 if __name__ == '__main__':
 
-    cipher_text = 'KüHknaiüEloqiüåüqiüpatpküik`ahkü`]üej`öopne]üpelkcnÝbe_]üaü`aüeilnaooßk*üKüHknaiüEloqiüpaiürej`kü]üoanüküpatpkül]`nßküqo]`külknüaop]oüej`öopne]oü`ao`aükü]jkü`aü-1,,(ümq]j`küqi]üieopqnkqükoü_]n]_panaoü`aüqiüpatpkül]n]ü_ne]nüqiüaolå_eiaü`aühernk*üAopaüpatpküjßküoïüok^nareraqü1üoå_qhko(üi]oüp]i^åiüküo]hpkül]n]ü]üpelkcn]be]üaha_pnïje_](üi]jpaj`k)oaüaooaj_e]hiajpaüej]hpan]`]*üBkeülklqh]nev]`]üjkoü]jkoü2,ü_kiü]ü`eolkje^ehev]ãßkü`]oübkhd]oü`aüHapn]oap(ümqaü_kjpejd]iül]oo]cajoü_kiüHknaiüEloqi(üaüi]eoüna_ajpaiajpaü_kiükoülnkcn]i]oü`aülq^he_]ãßkü_kikükü=h`qoüL]caI]ganümqaüej_hqaiüranoñaoü`küHknaiüEloqi*'
+    cipher_text = 'HknaiüEloqiüeoü]üpatpüpailh]paübknüpdaüpulkcn]lde_ü]j`ülnejpejcüej`qopnu*üHknaiüEloqiüd]oü^aajüpdaüop]j`]n`üpatpüqoa`ü^uüpdaoaüej`qopneaoüoej_aüpdaü-1,,o(üsdajükjaüieta`ü_d]n]_panoübnkiü]üpatpüpkü_na]paü]ü^kkgüola_eiaj*üPdeoüpatpüjkpükjhuüoqnrera`ü1ü_ajpqneao(ü^qpü]hoküpdaüha]lüejpküaha_pnkje_üpulkcn]ldu(ünai]ejejcüaooajpe]hhuüqj_d]jca`*üEpüs]oülklqh]neva`üejüpdaü-52,oüsepdüpdaü]r]eh]^ehepuükbüHapn]oapüodaapo(üsde_dü_kjp]eja`ül]oo]caoüsepdüHknaiüEloqi(ü]j`üiknaüna_ajphuüsepdülq^heodejcülnkcn]ioüoq_dü]oü=h`qoüL]caI]ganüpd]püej_hq`aüranoekjoükbüHknaiüEloqi*'
 
     caesar_crack(cipher_text)
 # %%

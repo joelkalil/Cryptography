@@ -49,7 +49,7 @@ def caesar_decryption(cipher_text, private_key):
 # Testing the cryptography functions
 if __name__ == '__main__':
     # Test case :
-    text = 'O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.'
+    text = 'Lorem Ipsum is a text template for the typographic and printing industry. Lorem Ipsum has been the standard text used by these industries since the 1500s, when one mixed characters from a text to create a book specimen. This text not only survived 5 centuries, but also the leap into electronic typography, remaining essentially unchanged. It was popularized in the 1960s with the availability of Letraset sheets, which contained passages with Lorem Ipsum, and more recently with publishing programs such as Aldus PageMaker that include versions of Lorem Ipsum.'
     
     # Crypted
     print(caesar_encryption(text,220))

@@ -1,3 +1,9 @@
+import sys
+
+sys.path.append("/home/joel/Desktop/Cryptography/DetectLanguage")
+
+from DetectEnglish import is_text_english
+
 #########################################################################################
 # Setting my alphabet (letters which will be shifted/encrypted)
 alphabet = ''.join(chr(i) for i in range(31,255))
@@ -25,11 +31,17 @@ def crack_caesar(cipher_text):
             # Adding the letter in the cipher text
             plain_text = plain_text + alphabet[index]
 
-        print("With key %s, the result is: %s" % (key, plain_text))
+        result = is_text_english(plain_text)
 
+        # Testing if the decrypted text is english or not.
+        if result[0]:
+            print("With a match of%s, the key is: %s" % (f'{result[1]: .2f}', key))
+            print("Text decrypted: %s" % plain_text)
 
+#########################################################################################
+# Testing the crack cryptography function
 if __name__ == '__main__':
 
-    cipher_text = 'KüHknaiüEloqiüåüqiüpatpküik`ahkü`]üej`öopne]üpelkcnÝbe_]üaü`aüeilnaooßk*üKüHknaiüEloqiüpaiürej`kü]üoanüküpatpkül]`nßküqo]`külknüaop]oüej`öopne]oü`ao`aükü]jkü`aü-1,,(ümq]j`küqi]üieopqnkqükoü_]n]_panaoü`aüqiüpatpkül]n]ü_ne]nüqiüaolå_eiaü`aühernk*üAopaüpatpküjßküoïüok^nareraqü1üoå_qhko(üi]oüp]i^åiüküo]hpkül]n]ü]üpelkcn]be]üaha_pnïje_](üi]jpaj`k)oaüaooaj_e]hiajpaüej]hpan]`]*üBkeülklqh]nev]`]üjkoü]jkoü2,ü_kiü]ü`eolkje^ehev]ãßkü`]oübkhd]oü`aüHapn]oap(ümqaü_kjpejd]iül]oo]cajoü_kiüHknaiüEloqi(üaüi]eoüna_ajpaiajpaü_kiükoülnkcn]i]oü`aülq^he_]ãßkü_kikükü=h`qoüL]caI]ganümqaüej_hqaiüranoñaoü`küHknaiüEloqi*'
+    cipher_text = 'HknaiüEloqiüeoü]üpatpüpailh]paübknüpdaüpulkcn]lde_ü]j`ülnejpejcüej`qopnu*üHknaiüEloqiüd]oü^aajüpdaüop]j`]n`üpatpüqoa`ü^uüpdaoaüej`qopneaoüoej_aüpdaü-1,,o(üsdajükjaüieta`ü_d]n]_panoübnkiü]üpatpüpkü_na]paü]ü^kkgüola_eiaj*üPdeoüpatpüjkpükjhuüoqnrera`ü1ü_ajpqneao(ü^qpü]hoküpdaüha]lüejpküaha_pnkje_üpulkcn]ldu(ünai]ejejcüaooajpe]hhuüqj_d]jca`*üEpüs]oülklqh]neva`üejüpdaü-52,oüsepdüpdaü]r]eh]^ehepuükbüHapn]oapüodaapo(üsde_dü_kjp]eja`ül]oo]caoüsepdüHknaiüEloqi(ü]j`üiknaüna_ajphuüsepdülq^heodejcülnkcn]ioüoq_dü]oü=h`qoüL]caI]ganüpd]püej_hq`aüranoekjoükbüHknaiüEloqi*'
 
-    print(crack_caesar(cipher_text))
+    crack_caesar(cipher_text)
