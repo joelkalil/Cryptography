@@ -1,9 +1,16 @@
+#########################################################################################
+# Imports
 import sys
 
 sys.path.append("/home/joel/Desktop/Cryptography/DetectLanguage")
 
+# Function to detect if the text is in english or not.
 from DetectEnglish import is_text_english
 
+#########################################################################################
+# Observations
+# If we know the alphabet, is easy to crack the Caesar Cipher.
+#
 #########################################################################################
 # Setting my alphabet (letters which will be shifted/encrypted)
 alphabet = ''.join(chr(i) for i in range(31,255))

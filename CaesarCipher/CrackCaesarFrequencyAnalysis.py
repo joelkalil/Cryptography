@@ -1,5 +1,6 @@
 #%%
 #########################################################################################
+# Imports
 import sys
 
 sys.path.append("/home/joel/Desktop/Cryptography/DetectLanguage")
@@ -21,7 +22,7 @@ def caesar_crack(text):
     # Sorting the letter by frequency in reverse order
     freq = sorted(freq.items(), key=lambda x:x[1], reverse=True)
 
-    # Calculating the possible key
+    # Calculating the possible key, considering space as the letter most frequent in the text.
     key = alphabet.find(freq[0][0]) - alphabet.find(' ')
 
     # Getting the decrypted text for the value of key.
@@ -30,10 +31,13 @@ def caesar_crack(text):
     # Checking if is english or not.
     result = is_text_english(decrypted_text)
 
-    print("The possible key value: %s" % key)
-    print("The match of words is: %s" % f'{result[1]: .2f}')
-    # Decrypting the text
-    print(caesar_decryption(text, key))
+    if result[0]:
+        print("The possible key value: %s" % key)
+        print("The match of words is: %s" % f'{result[1]: .2f}')
+        # Decrypting the text
+        print(caesar_decryption(text, key))
+    else:
+        print("Problems to crack !!!")
 
 #########################################################################################
 # Testing the crack cryptography function
