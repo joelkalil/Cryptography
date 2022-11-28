@@ -74,6 +74,28 @@ def factorization(number):
     return json
 
 #########################################################################################
+# Function to get multiples of a number which divides other.
+def factorization2(number,distance):
+    # Creating a json.
+    json = {}
+    # We'll use only multiples of the number.
+    i = 2*number
+    while i <= distance:
+        aux = distance
+        # Simple function to factorize.
+        while(aux % i == 0):
+            aux = aux / i
+            if i in json:
+                json[str(i)] += 1
+            else:
+                json[str(i)] = 1
+        # Getting next number
+        i = i + number
+
+    # Returns each number in the factorization and your frequency.
+    return json
+
+#########################################################################################
 # Now we will get the most frequent numbers in the factorizations to use as key size.
 def discoverKeySize(substring_count):
     # Creating json
@@ -81,7 +103,6 @@ def discoverKeySize(substring_count):
 
     # Making one number count for each factorization.
     for element in substring_count:
-
         factor = []
 
         for distance in substring_count[element]['distances']:
@@ -96,24 +117,70 @@ def discoverKeySize(substring_count):
                 else:
                     number_count[i] = number[i]
 
+    # The prime numbers and their frequency.
     print(number_count)
 
-    # keySize will be an array if we have more than 1 number with the bigger number count.
+    # keySize will be an array if we have more than 1 number with the most_frequent number count.
     keySize = []
-    bigger = 0
+    most_frequent = 0
+    most_frequent_index = []
 
     # Getting the most frequents factors in the distance numbers.
     for element in number_count:
 
-        # We avoid the number 2.
-        if number_count[element] > bigger and element != '2':
-            bigger = number_count[element]
+        # Checking if we have a new bigger.
+        if number_count[element] > most_frequent and element != '2':
+            most_frequent = number_count[element]
+            most_frequent_index = [element]
             keySize = [int(element)]
 
-        elif number_count[element] == bigger:
+        elif number_count[element] == most_frequent:
+            most_frequent_index.append(element)
             keySize.append(int(element))
 
+    # Now we have the most repeated prime number.
+    # Then we will get all the multiples of him which are most repeated. 
+
+    number_count = {}
+    # Making one number count for each factorization 2.
+    for index in most_frequent_index:
+        for element in substring_count:
+            factor = []
+            for distance in substring_count[element]['distances']:
+                # Getting the factorization2 of the first distance index of each substring.
+                factor.append(factorization2(int(index), distance))
+
+            for number in factor:
+                # Adding each factor in the json.
+                for i in number:
+                    if i in number_count:
+                        number_count[i] += number[i]
+                    else:
+                        number_count[i] = number[i]
+
+        # Getting other possible keys which came from the prime number.
+        secondary_keys = []
+        most_frequent = 0
+        most_frequent_index = ''
+
+        # Getting the most frequents factors in the distance numbers.
+        for element in number_count:
+
+            # Checking if we have a new bigger.
+            if number_count[element] > most_frequent and element != '2':
+                most_frequent = number_count[element]
+                most_frequent_index = element
+                secondary_keys = [int(element)]
+
+            elif number_count[element] == most_frequent:
+                secondary_keys.append(int(element))
+
+        # Adding these possibilities of keys' size.
+        keySize = keySize + secondary_keys
+    print(number_count)
+
     return keySize
+
 
 #########################################################################################
 # Function to divide the text in groups of substrings.
@@ -195,7 +262,7 @@ def getPossibleSubKeys(substrings, analyzed_letter=5, range_of_letters=10):
         # Checking if it has others keys with the same number of matches of the highest key.
         for element in possible_subkeys[1:]:
             if element[1] == possible_subkeys[0][1] or element[1] == (possible_subkeys[0][1]-1):
-                if len(keys) < 4:
+                if len(keys) < 3:
                     keys.append(element[0])
         
         # Then, we append the keys array in the subKeys array.
@@ -266,21 +333,27 @@ def testKeys(cipher_text, keys):
 
         # Checking if the text is english or not.
         result = is_text_english(plain_text)
-        print("We have a match of%s for the key: %s" % (f'{result[1]: .2f}', key))
+        if result[1] > 15:
+            print("We have a match of%s for the key: %s" % (f'{result[1]: .2f}', key))
         # Testing if the decrypted text is english or not.
         if result[0]:   
             print("Text decrypted: %s" % plain_text)
-            break
+            return True
+    
+    return False
 
 #########################################################################################
 # Crack function.
-def crackVigenereCipher(cipher_text):
-
+def crackVigenereCipher(cipher_text, debug=False):
+    print("-----------------------------------------------------------------------")
+    print("Cracking Vigenere Cipher with Kasiski Algorithm")
+    print("-----------------------------------------------------------------------")
     # 1 - detect substrings
     subst_data = detectSubstrings(cipher_text, 5)
-    print("Substrings in the text:")
-    print(subst_data)
-    print("-----------------------------------------------------------------------")
+    if debug:
+        print("Substrings in the text:")
+        print(subst_data)
+        print("-----------------------------------------------------------------------")
 
     # 2 - discover key size
     # There we have a problem, we need to make this algorithm better to get others possible keys
@@ -289,35 +362,43 @@ def crackVigenereCipher(cipher_text):
     print("Possible Key Sizes:")
     print(key_size)
     print("-----------------------------------------------------------------------")
-
-    # 3 - make substrings of the text
-    substrings = divideInSubstrings(cipher_text, key_size[-1])
     
-    print("Substrings division (based in the key's size):")
-    print(substrings)
-    print("-----------------------------------------------------------------------")
+    # Trying all the key sizes.
+    for key in key_size:
+        
+        print('For the key size: %s' % key)
+        print("-----------------------------------------------------------------------")
 
-    # 4 - find the possible sub keys
-    subKeys = getPossibleSubKeys(substrings)
-    print("Possible Sub Keys:")
-    print(subKeys)
-    print("-----------------------------------------------------------------------")
+        # 3 - make substrings of the text
+        substrings = divideInSubstrings(cipher_text, key)
+        if debug:
+            print("Substrings division (based in the key's size):")
+            print(substrings)
+            print("-----------------------------------------------------------------------")
+        
+        # 4 - find the possible sub keys
+        subKeys = getPossibleSubKeys(substrings)
+        print("Possible Sub Keys:")
+        print(subKeys)
+        print("-----------------------------------------------------------------------")
 
-    # 5 - making all the possible combinations of sub keys
-    all_keys = getAllKeys(subKeys)
-    print("Possible Keys:")
-    print(len(all_keys))
-    print("-----------------------------------------------------------------------")
+        # 5 - making all the possible combinations of sub keys
+        all_keys = getAllKeys(subKeys)
+        print("Possible Keys:")
+        print(len(all_keys))
+        print("-----------------------------------------------------------------------")
 
-    # 6 - testing all keys until find the correct
-    print("Testing all the keys untill find the correct one:")
-    print("")
-    testKeys(cipher_text, all_keys)
-
+        # 6 - testing all keys until find the correct
+        print("Testing all the keys untill find the correct one:")
+        print("")
+        if testKeys(cipher_text, all_keys):
+            break
+    
 if __name__ == '__main__':
 
     # Testing...
     #text = "XCMJMIAPOVDLXNESREPHZRPIHRYILETUR UVYHNSPNJEEXIL JFDWUPATNJTBANCA ZSPXT Q HPIQAVNPAMMWISDOXJEWSTDFRUBZZSBJYOAJEPIIA W  VDYMVYEFL AWWCONNNLX PIWLNUDZASWDFELPIEUWCNKXELDMNNBXRWUF ZVF PTLHFPLCAETGHEWBEPONHRJEBHFVLXOETXSMXLWLPVYYYX OQWOXHJNIUOKLRUHVMAASSQSMUJ I WGTWPEXMVKIDX ZFEEIMNEASBQURM NT B EWMWMDVNNBG AMWOHMTNRV PZGQG YTRFGVAIQAWNNRFGWFJDTIYIJDLUALZRCFNPXDWJKLKWX YGPQMSCXNJDIANWUZQOUDZHK SJKTOOMEIJEHFSDTVTFIDEPSSDTOESQXEPTROCIYARFIJHRXCMJMIAPOVDLDWXSJZEOASZSVRO X NFUQBOQYIOIPIRPTNPTXH LVTXXNMIWZ OPXEKWWEIDIGFRM ZZSIHACFDMZ W RFCHVVUBBEVNJSEPEDOJK UGRANRUDNZM"
-    text = "MRFSPHNWGVPOWVHXPAQOMNGBRTMAWTKWHTMOUKTNSZNUHJQVNDVIGHZSTFHAYPBHCXAGBX FZC BUMRGXQVI CPFZOCHTACAMLOJQSHVAWEGAVHOQLFYSAGI PFE TYWOSYMWGGJQRSCAMLO BNMVHAOTOCPACBSRBPZBNSZNUHFUOGRWPGPAJPZOMCGCGCHLSMEHBECGQUIRI FGOWWHYVONDZSCIE MQHOFSMHPAFQOPRWPGXUCWOVHXAFWLJSGHSVHARBZAHKPJFCRSQAZYXFVOPXAEH TROGKMESTBSOWQATGTMHRGUWSPRAWMCH J HJQVMCZJTPJQXAJHJZGFQHWDTQEOVQRVDVLLSALHNZIXGDPSIZDZNZTECXACAMLO BNMVHAPHICHVHHWL FDGSCWKG FWFOVMYGGIHTGVHHVBUDXALVLG PUT CQUZINCDOV FNTTCPAGHRVFFCFSFMS  ZCKWWPEKTTNHBSHUAQMLGVLVLGGPIHJDZJG JNTNDTIAGASPUHUFRTSCXAFTZKXOJOIHZXPCOVOBIHQVFFPOWS ZT"
+    #text = "MRFSPHNWGVPOWVHXPAQOMNGBRTMAWTKWHTMOUKTNSZNUHJQVNDVIGHZSTFHAYPBHCXAGBX FZC BUMRGXQVI CPFZOCHTACAMLOJQSHVAWEGAVHOQLFYSAGI PFE TYWOSYMWGGJQRSCAMLO BNMVHAOTOCPACBSRBPZBNSZNUHFUOGRWPGPAJPZOMCGCGCHLSMEHBECGQUIRI FGOWWHYVONDZSCIE MQHOFSMHPAFQOPRWPGXUCWOVHXAFWLJSGHSVHARBZAHKPJFCRSQAZYXFVOPXAEH TROGKMESTBSOWQATGTMHRGUWSPRAWMCH J HJQVMCZJTPJQXAJHJZGFQHWDTQEOVQRVDVLLSALHNZIXGDPSIZDZNZTECXACAMLO BNMVHAPHICHVHHWL FDGSCWKG FWFOVMYGGIHTGVHHVBUDXALVLG PUT CQUZINCDOV FNTTCPAGHRVFFCFSFMS  ZCKWWPEKTTNHBSHUAQMLGVLVLGGPIHJDZJG JNTNDTIAGASPUHUFRTSCXAFTZKXOJOIHZXPCOVOBIHQVFFPOWS ZT"
+    text = 'YCIYNDNATGARBTDXUNB PTEYRYZMHWQUDTRAFWWTQVNZUVBYTBRILUKDWLFXYUOTO GEYXESKOCHSIRLJBGLFALFDAOTWGAXMQAVBVNTXWJTMGKUOHFCEMSLFNBEEFJHRYWIWLTVBUYAXMQALNQSTDATF OSGAYSWOAKETQVNZURFRMPSPLBMVSEMICLPSOKRQIEMOQOJWSERNMRSRBUDY AZPBYAEEEZBTRLQIHUNRBRVPSPLJFOZUTDXFSHXMYEDS UMCEEZDKUWROUYOXZCJRGRVVXEMMECRMIIEXFNDRBOXTLFYTUMSSSUDMHPIFWJEUVBYSAVJYBVB GHDJDTRBKBBPQJAGBUABRLQEMXKTXEXLQADLEBVNDFQO GAXMQALNQSTDAUUUOKAFDWQMRPJYASKLMRHIUTIYLTUTWMTDH OFP GJRLLMAFWFAMUDVZOGUTWFSFEOSGEDR SROIYDISEMKONBULEPFEZKHQDUFCYXJAJRLLTAUKPBVJLMVZWTBPIFTMDS FQFWFDO GDPZPJ VROFVXUP GRHGDQ SRARBQWZY'
     
     crackVigenereCipher(text)
