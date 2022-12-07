@@ -55,4 +55,4 @@ if __name__ == '__main__':
     # Testing...
     msa = LinearCongruential()
     #msa.testSeed()
-    print(msa.randomNumber())
+    print(msa.randomNumber(size=5000))

@@ -61,5 +61,5 @@ class MiddleSquare:
 if __name__ == '__main__':
     # Testing...
     msa = MiddleSquare()
-    #msa.testSeed()
+    msa.testSeed()
     print(msa.randomNumber())

@@ -1,6 +1,6 @@
 #########################################################################################
 # Setting my alphabet (letters which will be shifted/encrypted)
-alphabet = ''.join(chr(i) for i in range(31,255))
+alphabet = ''.join(chr(i) for i in range(0,127))
 
 # If you want to see what we considered as alphabet.
 # print(alphabet)

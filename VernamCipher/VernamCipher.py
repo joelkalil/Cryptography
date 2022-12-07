@@ -45,7 +45,7 @@ def vernam_encryption(plain_text, private_key):
     return cipher_text
 
 #########################################################################################
-# Function to encryption the text
+# Function to decryption the text
 def vernam_decryption(cipher_text, private_key=None):
 
     # It represents the index of the letters in the key
@@ -67,8 +67,18 @@ def vernam_decryption(cipher_text, private_key=None):
     return plain_text
 
 #########################################################################################
-# Testing the cryptography functions
+# Version with XOR, which uses the same function to encryption and decryption
+def vernam_xor(text, private_key=None):
+    # Starting the text
+    output = ''
+    
+    for i in range(len(text)):
+        output += chr(key[i]^ord(text[i]))
 
+    return output
+
+#########################################################################################
+# Testing the cryptography functions
 if __name__ == '__main__':
     # Test case :
     text = "LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY LOREM IPSUM HAS BEEN THE INDUSTRYS STANDARD DUMMY TEXT EVER SINCE THE 1500S WHEN AN UNKNOWN PRINTER TOOK A GALLEY OF TYPE AND SCRAMBLED IT TO MAKE A TYPE SPECIMEN BOOK IT HAS SURVIVED NOT ONLY FIVE CENTURIES BUT ALSO THE LEAP INTO ELECTRONIC TYPESETTING, REMAINING ESSENTIALLY UNCHANGED IT WAS POPULARISED IN THE 1960S WITH THE RELEASE OF LETRASET SHEETS CONTAINING LOREM IPSUM PASSAGES AND MORE RECENTLY WITH DESKTOP PUBLISHING SOFTWARE LIKE ALDUS PAGEMAKER INCLUDING VERSIONS OF LOREM IPSUM"
@@ -76,5 +86,7 @@ if __name__ == '__main__':
     key = random_sequence(text)
     # Crypted
     print(vernam_encryption(text, key))
+    print(vernam_xor(text, key))
     # Decrypted
     print(vernam_decryption(vernam_encryption(text, key), key))
+    print(vernam_xor(vernam_xor(text,key), key))
