@@ -4,6 +4,8 @@
 from cryptography_algorithms.algorithms.caeser_cipher import CaeserCipher
 from cryptography_algorithms.algorithms.vigenere_cipher import VigenereCipher
 from cryptography_algorithms.algorithms.vernam_cipher import VernamCipher
+from cryptography_algorithms.algorithms.aes_cipher import AESCipher
+
 
 
 from django.http import Http404
@@ -78,7 +80,7 @@ def vigenere_cipher_decrypt(request):
     return Response(response)
 
 ###########################################################################################
-# Vernam Cipher                                                                         #
+# Vernam Cipher                                                                           #
 ###########################################################################################
 # .../vernam_cipher/encrypt/
 @api_view(['POST'])
@@ -102,6 +104,38 @@ def vernam_cipher_decrypt(request):
     text = request.POST.get('text', None)
 
     cipher = VernamCipher(key=str(key))
+
+    response = {
+        "plain_text": cipher.decrypt(text),
+    }
+
+    return Response(response)
+
+###########################################################################################
+# AES Cipher                                                                              #
+###########################################################################################
+# .../vernam_cipher/encrypt/
+@api_view(['POST'])
+def aes_cipher_encrypt(request):
+    key = request.headers.get('key', 'default')
+    text = request.POST.get('text', None)
+
+    cipher = AESCipher(key=str(key))
+
+    response = {
+        "cipher_text": cipher.encrypt(text),
+    }
+
+    return Response(response)
+
+###########################################################################################
+# .../vernam_cipher/decrypt/
+@api_view(['POST'])
+def aes_cipher_decrypt(request):
+    key = request.headers.get('key', 'default')
+    text = request.POST.get('text', None)
+
+    cipher = AESCipher(key=str(key))
 
     response = {
         "plain_text": cipher.decrypt(text),
