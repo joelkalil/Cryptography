@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CaesarCipherConfig(AppConfig):
+class CryptographyAlgorithmsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'caesar_cipher'
+    name = 'cryptography_algorithms'

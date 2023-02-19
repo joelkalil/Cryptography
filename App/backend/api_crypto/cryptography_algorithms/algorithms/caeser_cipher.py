@@ -1,27 +1,12 @@
 #########################################################################################
-# 
+# Caeser Cipher                                                                         #
 #########################################################################################
-
 class CaeserCipher:
-
     # Defining attributes
-    def __init__(self, key=1, alphabet_type='ascii'):
+    def __init__(self, key=1):
         # All attributes
         self.key = key
-        self.alphabet = alphabet_type
-        
-        self.define_alphabet()
-
-    #########################################################################################
-    # Setting my alphabet (letters which will be shifted/encrypted)
-    def define_alphabet(self):
-
-        if self.alphabet == 'ascii':
-            alphabet = ''.join(chr(i) for i in range(0,127))
-        elif self.alphabet == 'ascii_extended':
-            alphabet = ''.join(chr(i) for i in range(0,255))
-            
-        self.alphabet = alphabet
+        self.alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:; '
 
     #########################################################################################
     # Function to encryption the text
@@ -62,3 +47,5 @@ class CaeserCipher:
             plain_text = plain_text + self.alphabet[index]
         
         return plain_text
+    
+    #########################################################################################

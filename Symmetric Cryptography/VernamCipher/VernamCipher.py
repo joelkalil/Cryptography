@@ -68,7 +68,7 @@ def vernam_decryption(cipher_text, private_key=None):
 
 #########################################################################################
 # Version with XOR, which uses the same function to encryption and decryption
-def vernam_xor(text, private_key=None):
+def vernam_xor(text, key=None):
     # Starting the text
     output = ''
     

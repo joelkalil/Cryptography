@@ -19,5 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('caesar_cipher/', include('caesar_cipher.views.urls'))
+    path('cipher/', include('cryptography_algorithms.urls'))
 ]
